@@ -4,17 +4,6 @@ using CommandLine.Text;
 using Jackett.Common;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Utils;
-using Jackett.Utils;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Jackett.Console
 {
@@ -191,11 +180,6 @@ namespace Jackett.Console
                     Engine.Logger.Error(e, "Top level exception");
                 }
             });
-    }
-        
-
-       
-
+        }
     }
 }
-

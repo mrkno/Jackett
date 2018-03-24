@@ -2,7 +2,7 @@
 
 namespace Jackett
 {
-    public class JackettAPINoCacheAttribute : System.Web.Http.Filters.ActionFilterAttribute
+    public class JackettAPINoCacheAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {

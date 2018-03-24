@@ -2,11 +2,15 @@
 using NLog;
 using System;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using Jackett.Common.Plumbing;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils.Clients;
+using IContainer = Autofac.IContainer;
+using WebClient = Jackett.Common.Utils.Clients.WebClient;
+using WebRequest = Jackett.Common.Utils.Clients.WebRequest;
 
 namespace Jackett.Test
 {

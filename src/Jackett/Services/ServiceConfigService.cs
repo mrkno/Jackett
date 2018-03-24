@@ -4,8 +4,6 @@ using System.Collections.Specialized;
 using System.Configuration.Install;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.ServiceProcess;
 using Jackett.Common.Services.Interfaces;
 
 namespace Jackett.Services

@@ -1,23 +1,23 @@
-using Owin;
 using System;
-using System.Threading.Tasks;
-using System.Web.Http;
-using Microsoft.Owin;
-using Jackett;
-using Microsoft.Owin.StaticFiles;
-using Microsoft.Owin.FileSystems;
-using System.Web.Http.Tracing;
-using Jackett.Utils;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Http;
 using System.Web.Http.Filters;
-using Newtonsoft.Json.Linq;
 using Autofac.Integration.WebApi;
 using Jackett.Common;
 using Jackett.Common.Utils;
+using Jackett.Utils;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using IExceptionFilter = System.Web.Http.Filters.IExceptionFilter;
 
-[assembly: OwinStartup(typeof(Startup))]
 namespace Jackett
 {
     class ApiExceptionHandler : IExceptionFilter
@@ -97,7 +97,21 @@ namespace Jackett
 
     public class Startup
     {
-        public void Configuration(IAppBuilder appBuilder)
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddMvc();
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder appBuilder, IHostingEnvironment env)
         {
             // Configure Web API for self-host. 
             var config = new HttpConfiguration();
@@ -118,8 +132,8 @@ namespace Jackett
             {
                 Engine.Logger.Error(e, "Error while setting HttpListener.IgnoreWriteExceptions = true");
             }
-            appBuilder.Use<WebApiRootRedirectMiddleware>();
-            appBuilder.Use<LegacyApiRedirectMiddleware>();
+            appBuilder.UseMiddleware<WebApiRootRedirectMiddleware>();
+            appBuilder.UseMiddleware<LegacyApiRedirectMiddleware>();
 
             // register exception handler
             config.Filters.Add(new ApiExceptionHandler());
@@ -205,5 +219,4 @@ namespace Jackett
             });
         }
     }
-
 }

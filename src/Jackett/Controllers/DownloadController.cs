@@ -10,6 +10,7 @@ using BencodeNET.Parsing;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils;
+using Microsoft.AspNetCore.WebUtilities;
 using NLog;
 
 namespace Jackett.Controllers
@@ -44,7 +45,7 @@ namespace Jackett.Controllers
                     return Request.CreateResponse(HttpStatusCode.Forbidden, "This indexer is not configured.");
                 }
 
-                path = Encoding.UTF8.GetString(HttpServerUtility.UrlTokenDecode(path));
+                path = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(path));
                 path = protectionService.UnProtect(path);
 
                 if (config.APIKey != jackett_apikey)

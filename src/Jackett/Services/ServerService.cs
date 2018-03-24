@@ -1,5 +1,4 @@
-﻿using Microsoft.Owin.Hosting;
-using NLog;
+﻿using NLog;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,13 +11,15 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-using System.Web;
 using System.Collections;
 using System.Text.RegularExpressions;
 using Jackett.Common;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils.Clients;
+using Microsoft.AspNetCore;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Jackett.Services
 {
@@ -65,7 +66,7 @@ namespace Jackett.Services
                 return link;
 
             var encryptedLink = _protectionService.Protect(link.ToString());
-            var encodedLink = HttpServerUtility.UrlTokenEncode(Encoding.UTF8.GetBytes(encryptedLink));
+            var encodedLink = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(encryptedLink));
             string urlEncodedFile = WebUtility.UrlEncode(file);
             var proxyLink = string.Format("{0}{1}/{2}/?jackett_apikey={3}&path={4}&file={5}", serverUrl, action, indexerId, config.APIKey, encodedLink, urlEncodedFile);
             return new Uri(proxyLink);
@@ -288,7 +289,11 @@ namespace Jackett.Services
             config.RuntimeSettings.BasePath = BasePath();
             try
             {
-                _server = WebApp.Start<Startup>(startOptions);
+                _server = WebHost.CreateDefaultBuilder(args)
+                    .UseStartup<Startup>(startOptions)
+                    .Build();
+
+                //WebApp.Start<Startup>(startOptions);
             }
             catch (TargetInvocationException e)
             {

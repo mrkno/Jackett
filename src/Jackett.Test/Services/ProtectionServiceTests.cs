@@ -1,5 +1,5 @@
-﻿using NUnit.Framework;
-using Autofac;
+﻿using Autofac;
+using NUnit.Framework;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Services.Interfaces;
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Web.Http;
 using Jackett.Common;
@@ -147,7 +148,7 @@ namespace Jackett.Controllers
                     {
                         try
                         {
-                            processService.StartProcessAndLog(System.Windows.Forms.Application.ExecutablePath, "--ReserveUrls", true);
+                            processService.StartProcessAndLog(Assembly.GetExecutingAssembly().Location, "--ReserveUrls", true);
                         }
                         catch
                         {

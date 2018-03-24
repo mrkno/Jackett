@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BF611F7B-4658-4CB8-AA9E-0736FADAA3BA}</ProjectGuid>
+    <ProjectGuid>{478E711D-268E-4FE9-AFF3-1E86B77A492F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Jackett.Service</RootNamespace>
@@ -72,16 +72,12 @@
     <Content Include="jackett.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CurlSharp\CurlSharp.csproj">
-      <Project>{74420a79-cc16-442c-8b1e-7c1b913844f0}</Project>
-      <Name>CurlSharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Jackett.Common\Jackett.Common.csproj">
-      <Project>{6B854A1B-9A90-49C0-BC37-9A35C75BCA73}</Project>
+      <Project>{6b854a1b-9a90-49c0-bc37-9a35c75bca73}</Project>
       <Name>Jackett.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Jackett\Jackett.csproj">
-      <Project>{e636d5f8-68b4-4903-b4ed-ccfd9c9e899f}</Project>
+      <Project>{0e7b237b-b32a-4c97-9954-2d8f0c1f1545}</Project>
       <Name>Jackett</Name>
     </ProjectReference>
   </ItemGroup>
