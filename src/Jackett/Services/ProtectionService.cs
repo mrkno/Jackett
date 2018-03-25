@@ -8,24 +8,21 @@ using Jackett.Common;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Services.Interfaces;
 using Jackett.Common.Utils;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace Jackett.Services
 {
 
     public class ProtectionService : IProtectionService
     {
-        DataProtectionScope PROTECTION_SCOPE = DataProtectionScope.LocalMachine;
         private const string JACKETT_KEY = "JACKETT_KEY";
         const string APPLICATION_KEY = "Dvz66r3n8vhTGip2/quiw5ISyM37f7L2iOdupzdKmzkvXGhAgQiWK+6F+4qpxjPVNks1qO7LdWuVqRlzgLzeW8mChC6JnBMUS1Fin4N2nS9lh4XPuCZ1che75xO92Nk2vyXUo9KSFG1hvEszAuLfG2Mcg1r0sVyVXd2gQDU/TbY=";
         private byte[] _instanceKey;
+        private IDataProtector _protector;
 
-        public ProtectionService(ServerConfig config)
+        public ProtectionService(ServerConfig config, IDataProtectionProvider provider)
         {
-            if (System.Environment.OSVersion.Platform == PlatformID.Unix)
-            {
-                // We should not be running as root and will only have access to the local store.
-                PROTECTION_SCOPE = DataProtectionScope.CurrentUser;
-            }
+            _protector = provider.CreateProtector(JACKETT_KEY);
             _instanceKey = Encoding.UTF8.GetBytes(config.InstanceId);
         }
 
@@ -63,13 +60,9 @@ namespace Jackett.Services
                 return string.Empty;
 
             var plainBytes = Encoding.UTF8.GetBytes(plainText);
-            var appKey = Convert.FromBase64String(APPLICATION_KEY);
             var instanceKey = _instanceKey;
-            var entropy = new byte[appKey.Length + instanceKey.Length];
-            Buffer.BlockCopy(instanceKey, 0, entropy, 0, instanceKey.Length);
-            Buffer.BlockCopy(appKey, 0, entropy, instanceKey.Length, appKey.Length);
 
-            var protectedBytes = ProtectedData.Protect(plainBytes, entropy, PROTECTION_SCOPE);
+            var protectedBytes = _protector.Protect(plainBytes);
 
             using (MemoryStream ms = new MemoryStream())
             {
@@ -131,7 +124,7 @@ namespace Jackett.Services
             Buffer.BlockCopy(instanceKey, 0, entropy, 0, instanceKey.Length);
             Buffer.BlockCopy(appKey, 0, entropy, instanceKey.Length, appKey.Length);
 
-            var unprotectedBytes = ProtectedData.Unprotect(protectedBytes, entropy, PROTECTION_SCOPE);
+            var unprotectedBytes = _protector.Unprotect(protectedBytes);
             return Encoding.UTF8.GetString(unprotectedBytes);
         }
 

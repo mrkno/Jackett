@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net452</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>JackettTray</AssemblyName>
     <OutputType>WinExe</OutputType>
     <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
@@ -33,8 +33,14 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <ProjectReference Include="..\Jackett.Common\Jackett.Common.csproj" />
-    <ProjectReference Include="..\Jackett\Jackett.csproj" />
+    <COMReference Include="IWshRuntimeLibrary.dll">
+      <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+    </COMReference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Configuration" />
@@ -70,5 +76,9 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="jackett.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Jackett.Common\Jackett.Common.csproj" />
+    <ProjectReference Include="..\Jackett\Jackett.csproj" />
   </ItemGroup>
 </Project>

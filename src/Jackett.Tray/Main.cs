@@ -8,15 +8,6 @@ using System.Windows.Forms;
 using Jackett.Common;
 using Jackett.Common.Models.Config;
 using Jackett.Common.Utils;
-using Microsoft.Win32;
-using Jackett;
-using Jackett.Utils;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-
 
 namespace Jackett.Tray
 {

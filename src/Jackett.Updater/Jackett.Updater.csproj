@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;net452</TargetFrameworks>
     <StartupObject>Jackett.Updater.Program</StartupObject>
     <ApplicationIcon />
   </PropertyGroup>

@@ -284,15 +284,15 @@ namespace Jackett.Services
         {
             // Start the server
             logger.Info("Starting web server at " + config.GetListenAddresses()[0]);
-            var startOptions = new StartOptions();
-            config.GetListenAddresses().ToList().ForEach(u => startOptions.Urls.Add(u));
             config.RuntimeSettings.BasePath = BasePath();
             try
             {
-                _server = WebHost.CreateDefaultBuilder(args)
-                    .UseStartup<Startup>(startOptions)
+                var server = WebHost.CreateDefaultBuilder()
+                    .UseUrls(config.GetListenAddresses().ToArray())
+                    .UseStartup<Startup>()
                     .Build();
-
+                server.Start();
+                _server = server;
                 //WebApp.Start<Startup>(startOptions);
             }
             catch (TargetInvocationException e)

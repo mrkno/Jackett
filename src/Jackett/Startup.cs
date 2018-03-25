@@ -12,6 +12,7 @@ using Jackett.Utils;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
@@ -108,6 +109,7 @@ namespace Jackett
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddDataProtection();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -178,7 +180,6 @@ namespace Jackett
                     indexerId = ""
                 }
             );
-
             config.Routes.MapHttpRoute(
                 name: "ServerConfiguration",
                 routeTemplate: "api/v2.0/server/{action}",
@@ -207,9 +208,8 @@ namespace Jackett
             );
 
             config.Routes.ConfigureLegacyRoutes();
-
+            Microsoft.AspNet.WebApi.WebApiAppBuilderExtensions;
             appBuilder.UseWebApi(config);
-
 
             appBuilder.UseFileServer(new FileServerOptions
             {
